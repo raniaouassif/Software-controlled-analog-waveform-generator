@@ -1,5 +1,7 @@
 import controlP5.*; // import controlP5
+import processing.serial.*;
 
+Serial port;
 ControlP5 cp5; // create ControlP5 object
 RadioButton r;
 
@@ -8,7 +10,11 @@ void setup() {
   fill(0, 0, 0);
 
   size(800, 200); // window size (width, height)
-  
+  printArray(Serial.list());
+  String portName = Serial.list()[1];
+  println(portName);
+  port = new Serial(this,portName,9600);
+
   cp5 = new ControlP5(this);
   
   // -------WAVEFORM TYPES : SINE, SQUARE, TRIANGLE  -------//
@@ -96,6 +102,14 @@ void controlEvent(ControlEvent theEvent) {
       print(int(theEvent.getGroup().getArrayValue()[i]));
     }
     println("\t "+theEvent.getValue());
+    if(theEvent.getValue()==1.0){
+      port.write('s');
+    } else if(theEvent.getValue()==2.0){
+      port.write('q');
+    }else if(theEvent.getValue()==3.0){
+      port.write('t');
+    }
+
   }
 };
 
