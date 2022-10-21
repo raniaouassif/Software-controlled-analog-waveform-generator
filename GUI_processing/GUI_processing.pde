@@ -7,13 +7,15 @@ void setup() {
   textSize(18);
   fill(0, 0, 0);
 
-  size(800, 500); // window size (width, height)
+  size(800, 200); // window size (width, height)
   
   cp5 = new ControlP5(this);
   
   // -------WAVEFORM TYPES : SINE, SQUARE, TRIANGLE  -------//
   r = cp5.addRadioButton("radio",20,70)
   .setSpacingRow(15)
+  //.setColorActive(color(100,11,100))
+
   .addItem("Sine", 1)
   .addItem("Square", 2)
   .addItem("Triangle", 3);
@@ -55,7 +57,15 @@ void setup() {
      ;
      
    phase.getCaptionLabel().setVisible(false); // to not show label
-   
+    
+    
+   // GENERATE WAVEFORM BUTTON
+
+  cp5.addButton("GENERATE")
+     .setValue(0)
+     .setPosition(650,140)
+     .setSize(100,40)
+     ;
 
 };
 
