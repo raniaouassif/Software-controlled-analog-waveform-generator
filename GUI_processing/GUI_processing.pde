@@ -38,6 +38,8 @@ void setup() {
      .setSize(100,20)
      .setFont(createFont("arial", 13))
      .setAutoClear(false) //disable enter key 
+     .setInputFilter(ControlP5.FLOAT)
+
      ;
    
    amplitude.getCaptionLabel().setVisible(false); // to not show label
@@ -48,6 +50,7 @@ void setup() {
      .setSize(100,20)
      .setFont(createFont("arial", 13))  
      .setAutoClear(false)
+     .setInputFilter(ControlP5.FLOAT)
      ;
      
    frequency.getCaptionLabel().setVisible(false); // to not show label
@@ -57,6 +60,7 @@ void setup() {
      .setSize(100,20)
      .setFont(createFont("arial",13))
      .setAutoClear(false) 
+     .setInputFilter(ControlP5.FLOAT)
      ;
      
    phase.getCaptionLabel().setVisible(false); // to not show label
@@ -73,7 +77,7 @@ void setup() {
 void draw() { //similar to Arduino loop()
   background(220,220,220); // background color of window
   
-  text("Waveform Type", 20, 50); //  
+  text("Waveform Type", 20, 50); 
   text("Amplitude (V)", 200 , 50);
   text("Frequency (Hz)", 380, 50);
   text("Phase (degrees)", 560, 50);
