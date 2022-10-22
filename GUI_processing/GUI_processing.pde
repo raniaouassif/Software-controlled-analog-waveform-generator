@@ -37,6 +37,9 @@ void setup() {
      .setPosition(200,70)
      .setSize(100,20)
      .setFont(createFont("arial", 13))
+     .setColorValue(0x00)         
+     .setColorBackground(color(255,255,255))  
+     .setColorCursor(0)
      .setAutoClear(false) //disable enter key 
      .setInputFilter(ControlP5.FLOAT)
 
@@ -48,9 +51,12 @@ void setup() {
   Textfield frequency = cp5.addTextfield("Frequency")
      .setPosition(380,70)
      .setSize(100,20)
-     .setFont(createFont("arial", 13))  
+     .setFont(createFont("arial", 13))
+     .setColorValue(0x00)         
+     .setColorBackground(color(255,255,255))  
+     .setColorCursor(0)
      .setAutoClear(false)
-     .setInputFilter(ControlP5.FLOAT)
+     .setInputFilter(ControlP5.INTEGER)
      ;
      
    frequency.getCaptionLabel().setVisible(false); // to not show label
@@ -59,8 +65,12 @@ void setup() {
      .setPosition(560,70)
      .setSize(100,20)
      .setFont(createFont("arial",13))
+     .setColorValue(0x00)         
+     .setColorBackground(color(255,255,255))  
+     .setColorCursor(0)
      .setAutoClear(false) 
-     .setInputFilter(ControlP5.FLOAT)
+     .setInputFilter(ControlP5.INTEGER)
+     
      ;
      
    phase.getCaptionLabel().setVisible(false); // to not show label
