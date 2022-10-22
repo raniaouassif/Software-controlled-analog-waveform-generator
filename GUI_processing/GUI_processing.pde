@@ -4,10 +4,14 @@ import processing.serial.*;
 Serial port;
 ControlP5 cp5; // create ControlP5 object
 RadioButton r;
+Textfield amplitude;
+Textfield frequency;
+Textfield phase; 
+Button generate;
 
 void setup() {
   textSize(18);
-  fill(0, 0, 0);
+  fill(255, 255, 255);
 
   size(800, 200); // window size (width, height)
   printArray(Serial.list());
@@ -29,13 +33,11 @@ void setup() {
    
   
   // ------------------AMPLITUDE ----------------------//
-  Textfield amplitude = cp5.addTextfield("Amplitude")
+  amplitude = cp5.addTextfield("Amplitude")
      .setPosition(200,70)
      .setSize(100,20)
-     .setFocus(true)
-     .setFont(createFont("arial", 15))
-     .setColorValue(0x00)         
-     .setColorBackground(color(255,255,255))  
+     .setFont(createFont("arial", 13))
+     .setAutoClear(false) //disable enter key 
      ;
    
    amplitude.getCaptionLabel().setVisible(false); // to not show label
@@ -44,30 +46,23 @@ void setup() {
   Textfield frequency = cp5.addTextfield("Frequency")
      .setPosition(380,70)
      .setSize(100,20)
-     .setFocus(true)
-     .setFont(createFont("arial", 15))
-     .setColorValue(0x00)         
-     .setColorBackground(color(255,255,255))   
+     .setFont(createFont("arial", 13))  
+     .setAutoClear(false)
      ;
      
    frequency.getCaptionLabel().setVisible(false); // to not show label
-   
     // ------------------PHASE ----------------------//
-  Textfield phase = cp5.addTextfield("Phase")
+  phase = cp5.addTextfield("Phase")
      .setPosition(560,70)
      .setSize(100,20)
-     .setFocus(true)
-     .setFont(createFont("arial", 15))
-     .setColorValue(0x00)         
-     .setColorBackground(color(255,255,255))  
+     .setFont(createFont("arial",13))
+     .setAutoClear(false) 
      ;
      
    phase.getCaptionLabel().setVisible(false); // to not show label
     
-    
-   // GENERATE WAVEFORM BUTTON
-
-  cp5.addButton("GENERATE")
+  // GENERATE WAVEFORM BUTTON
+  generate = cp5.addButton("GENERATE")
      .setValue(0)
      .setPosition(650,140)
      .setSize(100,40)
@@ -95,31 +90,60 @@ void draw() { //similar to Arduino loop()
 //  }
 //};
 
-void controlEvent(ControlEvent theEvent) {
-  if(theEvent.isFrom(r)) {
-    print("got an event from "+theEvent.getName()+"\t");
-    for(int i=0;i<theEvent.getGroup().getArrayValue().length;i++) {
-      print(int(theEvent.getGroup().getArrayValue()[i]));
-    }
-    println("\t "+theEvent.getValue());
-    if(theEvent.getValue()==1.0){
-      port.write('s');
-    } else if(theEvent.getValue()==2.0){
-      port.write('q');
-    }else if(theEvent.getValue()==3.0){
-      port.write('t');
-    }
+//void controlEvent(ControlEvent theEvent) {
+//  if(theEvent.isFrom(r)) {
+//    print("got an event from "+theEvent.getName()+"\t");
+//    for(int i=0;i<theEvent.getGroup().getArrayValue().length;i++) {
+//      print(int(theEvent.getGroup().getArrayValue()[i]));
+//    }
+//    println("\t "+theEvent.getValue());
+//    if(theEvent.getValue()==1.0){
+//      port.write('s');
+//    } else if(theEvent.getValue()==2.0){
+//      port.write('q');
+//    }else if(theEvent.getValue()==3.0){
+//      port.write('t');
+//    }
+//  }
+//  else if (theEvent.isFrom(amplitude)) {
+//        println("\t "+amplitude.getText());
 
+//  }
+//};
+
+void controlEvent(ControlEvent theEvent) {
+  if(theEvent.isFrom(generate)) {
+    print("got an event from Generate Button: ");
+    
+  
   }
+  //  if(r.getValue()==1.0){
+  //    println("The radio button value is sine");
+  //    //port.write('s');
+  //  } else if(theEvent.getValue()==2.0){
+  //    println("The radio button value is square");
+  //    //port.write('q');
+  //  }else if(theEvent.getValue()==3.0){
+  //    println("The radio button value is square");
+  //    port.write('t');
+  //  }
+  //}
+  //   println("Amplitude value is : "+amplitude.getText());
+  //   println("Frequency value is : "+frequency.getText());
+  //   println("Phase value is : "+phase.getText());
 };
+
+//void controlEvent(ControlEvent ev){
+//  println(ev.getController().getName());
+//}
+
+
+//void keyTyped() {
+//  if(cp5.get(Textfield.class, "input").isActive()){
+//  }
+//}
 
 void radioButton(int a) {
   println("a radio Button event: "+a);
   println(a);
 };
-
-
-//public void input(String theText) {
-//  // automatically receives results from controller input
-//  println("a textfield event for controller 'input' : "+theText);
-//}
