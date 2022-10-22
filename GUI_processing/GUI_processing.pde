@@ -4,6 +4,8 @@ import processing.serial.*;
 Serial port;
 ControlP5 cp5; // create ControlP5 object
 RadioButton r;
+Textfield amplitude;
+Textfield phase;
 
 void setup() {
   textSize(18);
@@ -29,7 +31,7 @@ void setup() {
    
   
   // ------------------AMPLITUDE ----------------------//
-  Textfield amplitude = cp5.addTextfield("Amplitude")
+     amplitude = cp5.addTextfield("Amplitude")
      .setPosition(200,70)
      .setSize(100,20)
      .setFocus(true)
@@ -53,7 +55,7 @@ void setup() {
    frequency.getCaptionLabel().setVisible(false); // to not show label
    
     // ------------------PHASE ----------------------//
-  Textfield phase = cp5.addTextfield("Phase")
+   phase = cp5.addTextfield("Phase")
      .setPosition(560,70)
      .setSize(100,20)
      .setFocus(true)
@@ -104,12 +106,22 @@ void controlEvent(ControlEvent theEvent) {
     println("\t "+theEvent.getValue());
     if(theEvent.getValue()==1.0){
       port.write('s');
+      
     } else if(theEvent.getValue()==2.0){
       port.write('q');
     }else if(theEvent.getValue()==3.0){
       port.write('t');
     }
 
+  }else if(theEvent.isFrom(amplitude)){
+    println("\t"+amplitude.getText());
+    int amp = Integer.valueOf(amplitude.getText());
+    port.write(amp);
+  
+  }else if(theEvent.isFrom(phase)){
+    println("\t"+phase.getText());
+    int ph = Integer.valueOf(phase.getText());
+    port.write(ph);
   }
 };
 
