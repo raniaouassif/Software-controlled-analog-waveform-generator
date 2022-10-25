@@ -6,7 +6,7 @@ ControlP5 cp5; // create ControlP5 object
 RadioButton r;
 Textfield amplitude;
 Textfield frequency;
-Textfield phase;
+Textfield phase; 
 Button generate;
 
 void setup() {
@@ -20,7 +20,7 @@ void setup() {
   port = new Serial(this,portName,9600);
 
   cp5 = new ControlP5(this);
- 
+  
   // -------WAVEFORM TYPES : SINE, SQUARE, TRIANGLE  -------//
   r = cp5.addRadioButton("radio",20,70)
   .setSpacingRow(15)
@@ -31,7 +31,7 @@ void setup() {
   .addItem("Triangle", 3);
   ; //x,y
    
- 
+  
   // ------------------AMPLITUDE ----------------------//
   amplitude = cp5.addTextfield("Amplitude")
      .setPosition(200,70)
@@ -40,7 +40,7 @@ void setup() {
      .setColorValue(0x00)         
      .setColorBackground(color(255,255,255))  
      .setColorCursor(0)
-     .setAutoClear(false) //disable enter key
+     .setAutoClear(false) //disable enter key 
      .setInputFilter(ControlP5.FLOAT)
 
      ;
@@ -48,7 +48,7 @@ void setup() {
    amplitude.getCaptionLabel().setVisible(false); // to not show label
 
    // ------------------FREQUENCY RANGE----------------------//
-   frequency = cp5.addTextfield("Frequency")
+  Textfield frequency = cp5.addTextfield("Frequency")
      .setPosition(380,70)
      .setSize(100,20)
      .setFont(createFont("arial", 13))
@@ -68,7 +68,7 @@ void setup() {
      .setColorValue(0x00)         
      .setColorBackground(color(255,255,255))  
      .setColorCursor(0)
-     .setAutoClear(false)
+     .setAutoClear(false) 
      .setInputFilter(ControlP5.INTEGER)
      
      ;
@@ -86,14 +86,13 @@ void setup() {
 
 void draw() { //similar to Arduino loop()
   background(220,220,220); // background color of window
- 
-  text("Waveform Type", 20, 50);
+  
+  text("Waveform Type", 20, 50); 
   text("Amplitude (V)", 200 , 50);
   text("Frequency (Hz)", 380, 50);
   text("Phase (degrees)", 560, 50);
 
 };
-
 
 //void keyPressed() {
 //  switch(key) {
