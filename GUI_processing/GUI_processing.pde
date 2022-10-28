@@ -48,7 +48,7 @@ void setup() {
    amplitude.getCaptionLabel().setVisible(false); // to not show label
 
    // ------------------FREQUENCY RANGE----------------------//
-  Textfield frequency = cp5.addTextfield("Frequency")
+   frequency = cp5.addTextfield("Frequency")
      .setPosition(380,70)
      .setSize(100,20)
      .setFont(createFont("arial", 13))
@@ -142,9 +142,12 @@ void controlEvent(ControlEvent theEvent) {
      port.write(amp);
 
      println("Frequency value is : "+frequency.getText());
-     int f = Integer.valueOf(frequency.getText());
-     port.write(f);
-
+     String f = frequency.getText();
+     port.write(f.length());
+     for(int i=0; i< f.length();i++){
+        char c = f.charAt(i);
+        port.write(c);
+     }
      println("Phase value is : "+phase.getText());
      int ph = Integer.valueOf(phase.getText());
      port.write(ph);
@@ -154,20 +157,7 @@ void controlEvent(ControlEvent theEvent) {
     
  
   }
-  //  if(r.getValue()==1.0){
-  //    println("The radio button value is sine");
-  //    //port.write('s');
-  //  } else if(theEvent.getValue()==2.0){
-  //    println("The radio button value is square");
-  //    //port.write('q');
-  //  }else if(theEvent.getValue()==3.0){
-  //    println("The radio button value is square");
-  //    port.write('t');
-  //  }
-  //}
-  //   println("Amplitude value is : "+amplitude.getText());
-  //   println("Frequency value is : "+frequency.getText());
-  //   println("Phase value is : "+phase.getText());
+  
 
 
 //void controlEvent(ControlEvent ev){
@@ -180,7 +170,7 @@ void controlEvent(ControlEvent theEvent) {
 //  }
 //}
 
-void radioButton(int a) {
-  println("a radio Button event: "+a);
-  println(a);
-};
+//void radioButton(int a) {
+//  println("a radio Button event: "+a);
+//  println(a);
+//};
