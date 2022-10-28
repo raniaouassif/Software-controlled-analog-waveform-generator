@@ -138,9 +138,12 @@ void controlEvent(ControlEvent theEvent) {
       port.write('t');
     }
      println("Amplitude value is : "+amplitude.getText());
-     int amp = Integer.valueOf(amplitude.getText());
-     port.write(amp);
-
+     String a = amplitude.getText();
+     port.write(a.length());
+     for(int i=0; i< a.length();i++){
+       char amp = a.charAt(i);
+       port.write(amp);
+     }
      println("Frequency value is : "+frequency.getText());
      String f = frequency.getText();
      port.write(f.length());
