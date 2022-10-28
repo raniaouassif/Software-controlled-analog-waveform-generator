@@ -112,34 +112,40 @@ void controlEvent(ControlEvent theEvent) {
     error = 0;
     println("got an event from Generate Button: \n");
     try{
-     float amp = Float.parseFloat(amplitude.getText());
+     float ampli = Float.parseFloat(amplitude.getText());
      int ph = Integer.valueOf(phase.getText());
      int freq = Integer.valueOf(phase.getText());
-     if ( amp < 2.5 || amp > 5 || freq < 100 ||freq > 10000 || ph > 180) {
+     if ( ampli < 2.5 || ampli > 5 || freq < 100 ||freq > 10000 || ph > 180) {
        error = 2;
     } else {
      if(r.getValue()==1.0){
       println("The radio button value is sine");
-      //port.write('s');
+      port.write('s');
     } else if(r.getValue()==2.0){
       println("The radio button value is square");
-      //port.write('q');
+      port.write('q');
     }else if(r.getValue()==3.0){
       println("The radio button value is square");
-      //port.write('t');
+      port.write('t');
     }
      println("Amplitude value is : "+amplitude.getText());
-     //port.write(amp);
 
+     String a = amplitude.getText();
+     port.write(a.length());
+     for(int i=0; i< a.length();i++){
+       char amp = a.charAt(i);
+       port.write(amp);
+     }
+     
      println("Frequency value is : "+frequency.getText());
      String f = frequency.getText();
      port.write(f.length());
      for(int i=0; i< f.length();i++){
         char c = f.charAt(i);
-        //port.write(c);
+        port.write(c);
      }
      println("Phase value is : "+phase.getText());
-     //port.write(ph);
+     port.write(ph);
   }
     } catch (Exception e){
       error = 1;
@@ -151,7 +157,6 @@ void controlEvent(ControlEvent theEvent) {
 void drawError(String s) {
   float xoffset = 120;
   pushStyle();
- ;  // fade the whole string by amt
   for (int i = 0; i < s.length(); i++) {
     char c = s.charAt(i);
     textSize(12);

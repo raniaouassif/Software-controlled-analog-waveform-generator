@@ -37,7 +37,13 @@ void loop() {
        delay(1000);
      }
     }
-    int amplitudeValue = Serial.read();
+    int amplitudeLength = Serial.read();
+    String a = "";
+    for(int i=0; i<amplitudeLength; i++){
+      char c = Serial.read();
+      a += c;
+    }
+    float amplitudeValue = a.toFloat();
     //Serial.println(amplitudeValue);
     if(amplitudeValue == 5){
      // Serial.println("Amplitude = 5 V");
