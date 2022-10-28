@@ -8,10 +8,15 @@ Textfield amplitude;
 Textfield frequency;
 Textfield phase; 
 Button generate;
-
+String error1;
+String error2;
+Integer error;
 void setup() {
   textSize(18);
   fill(0, 0, 0);
+  error = 0;  
+  error1 = "Error: All the parameters must be filled in";
+  error2 = "Error: Ranges must be Amplitude : 2.5 - 5 V, Frequency : 100 Hz - 10Khz, Phase : 0 - 180 degrees.";
 
   size(800, 200); // window size (width, height)
   printArray(Serial.list());
@@ -70,7 +75,7 @@ void setup() {
      .setColorCursor(0)
      .setAutoClear(false) 
      .setInputFilter(ControlP5.INTEGER)
-     
+
      ;
      
    phase.getCaptionLabel().setVisible(false); // to not show label
@@ -91,86 +96,68 @@ void draw() { //similar to Arduino loop()
   text("Amplitude (V)", 200 , 50);
   text("Frequency (Hz)", 380, 50);
   text("Phase (degrees)", 560, 50);
-
+  if(error == 0) {
+    drawError("");
+  }
+  if(error == 1) {
+    drawError(error1);  
+  }
+  if(error == 2) {
+    drawError(error2);  
+  }
 };
-
-//void keyPressed() {
-//  switch(key) {
-//    case('0'): r.deactivateAll(); break;
-//    case('1'): r.activate(0); break;
-//    case('2'): r.activate(1); break;
-//    case('3'): r.activate(2); break;
-//  }
-//};
-
-//void controlEvent(ControlEvent theEvent) {
-//  if(theEvent.isFrom(r)) {
-//    print("got an event from "+theEvent.getName()+"\t");
-//    for(int i=0;i<theEvent.getGroup().getArrayValue().length;i++) {
-//      print(int(theEvent.getGroup().getArrayValue()[i]));
-//    }
-//    println("\t "+theEvent.getValue());
-//    if(theEvent.getValue()==1.0){
-//      port.write('s');
-//    } else if(theEvent.getValue()==2.0){
-//      port.write('q');
-//    }else if(theEvent.getValue()==3.0){
-//      port.write('t');
-//    }
-//  }
-//  else if (theEvent.isFrom(amplitude)) {
-//        println("\t "+amplitude.getText());
-
-//  }
-//};
 
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.isFrom(generate)) {
-    print("got an event from Generate Button: ");
+    error = 0;
+    println("got an event from Generate Button: \n");
+    try{
+     float amp = Float.parseFloat(amplitude.getText());
+     int ph = Integer.valueOf(phase.getText());
+     int freq = Integer.valueOf(phase.getText());
+     if ( amp < 2.5 || amp > 5 || freq < 100 ||freq > 10000 || ph > 180) {
+       error = 2;
+    } else {
      if(r.getValue()==1.0){
       println("The radio button value is sine");
-      port.write('s');
+      //port.write('s');
     } else if(r.getValue()==2.0){
       println("The radio button value is square");
-      port.write('q');
+      //port.write('q');
     }else if(r.getValue()==3.0){
       println("The radio button value is square");
-      port.write('t');
+      //port.write('t');
     }
      println("Amplitude value is : "+amplitude.getText());
-     int amp = Integer.valueOf(amplitude.getText());
-     port.write(amp);
+     //port.write(amp);
 
      println("Frequency value is : "+frequency.getText());
      String f = frequency.getText();
      port.write(f.length());
      for(int i=0; i< f.length();i++){
         char c = f.charAt(i);
-        port.write(c);
+        //port.write(c);
      }
      println("Phase value is : "+phase.getText());
-     int ph = Integer.valueOf(phase.getText());
-     port.write(ph);
+     //port.write(ph);
   }
-     
-
-    
- 
+    } catch (Exception e){
+      error = 1;
+    }
   }
-  
+  }
 
 
-//void controlEvent(ControlEvent ev){
-//  println(ev.getController().getName());
-//}
-
-
-//void keyTyped() {
-//  if(cp5.get(Textfield.class, "input").isActive()){
-//  }
-//}
-
-//void radioButton(int a) {
-//  println("a radio Button event: "+a);
-//  println(a);
-//};
+void drawError(String s) {
+  float xoffset = 120;
+  pushStyle();
+ ;  // fade the whole string by amt
+  for (int i = 0; i < s.length(); i++) {
+    char c = s.charAt(i);
+    textSize(12);
+    fill(#cc0000);
+    text(c, xoffset, 160);
+    xoffset += textWidth(c);
+  }
+  popStyle();
+}
