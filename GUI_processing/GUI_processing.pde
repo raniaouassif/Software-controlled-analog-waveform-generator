@@ -4,6 +4,7 @@ import processing.serial.*;
 Serial port;
 ControlP5 cp5; // create ControlP5 object
 RadioButton r;
+PGraphics cimgDefault,cimgOver,cimgActive;
 Textfield amplitude;
 Textfield frequency;
 Textfield phase; 
@@ -11,6 +12,8 @@ Button generate;
 String error1;
 String error2;
 Integer error;
+
+
 void setup() {
   textSize(18);
   fill(0, 0, 0);
@@ -23,19 +26,20 @@ void setup() {
   String portName = Serial.list()[1];
   println(portName);
   port = new Serial(this,portName,9600);
-
   cp5 = new ControlP5(this);
+  
   
   // -------WAVEFORM TYPES : SINE, SQUARE, TRIANGLE  -------//
   r = cp5.addRadioButton("radio",20,70)
   .setSpacingRow(15)
-  //.setColorActive(color(100,11,100))
-
+  .setSize(20,20)
   .addItem("Sine", 1)
   .addItem("Square", 2)
   .addItem("Triangle", 3);
-  ; //x,y
-   
+  ; 
+  r.getItem(0).getCaptionLabel().setVisible(false);
+  r.getItem(1).getCaptionLabel().setVisible(false);
+  r.getItem(2).getCaptionLabel().setVisible(false);
   
   // ------------------AMPLITUDE ----------------------//
   amplitude = cp5.addTextfield("Amplitude")
@@ -75,7 +79,6 @@ void setup() {
      .setColorCursor(0)
      .setAutoClear(false) 
      .setInputFilter(ControlP5.INTEGER)
-
      ;
      
    phase.getCaptionLabel().setVisible(false); // to not show label
@@ -96,6 +99,12 @@ void draw() { //similar to Arduino loop()
   text("Amplitude (V)", 200 , 50);
   text("Frequency (Hz)", 380, 50);
   text("Phase (degrees)", 560, 50);
+  
+  //Radio button labels
+  text("Sine", 50, 85);
+  text("Square", 50, 122);
+  text("Triangle", 50, 157);
+  
   if(error == 0) {
     drawError("");
   }
@@ -116,7 +125,7 @@ void controlEvent(ControlEvent theEvent) {
      int ph = Integer.valueOf(phase.getText());
      int freq = Integer.valueOf(phase.getText());
      if ( ampli < 2.5 || ampli > 5 || freq < 100 ||freq > 10000 || ph > 180) {
-       error = 2;
+       error = 2;  // Out of bounds values
     } else {
      if(r.getValue()==1.0){
       println("The radio button value is sine");
@@ -148,20 +157,19 @@ void controlEvent(ControlEvent theEvent) {
      port.write(ph);
   }
     } catch (Exception e){
-      error = 1;
+      error = 1; //Empty parameters
     }
+   }
   }
-  }
-
 
 void drawError(String s) {
-  float xoffset = 120;
+  float xoffset = 280;
   pushStyle();
   for (int i = 0; i < s.length(); i++) {
     char c = s.charAt(i);
     textSize(12);
     fill(#cc0000);
-    text(c, xoffset, 160);
+    text(c, xoffset, 192);
     xoffset += textWidth(c);
   }
   popStyle();
