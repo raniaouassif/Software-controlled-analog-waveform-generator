@@ -4,7 +4,6 @@ import processing.serial.*;
 Serial port;
 ControlP5 cp5; // create ControlP5 object
 RadioButton r;
-PGraphics cimgDefault,cimgOver,cimgActive;
 Textfield amplitude;
 Textfield frequency;
 Textfield phase; 
@@ -121,22 +120,22 @@ void controlEvent(ControlEvent theEvent) {
     error = 0;
     println("got an event from Generate Button: \n");
     try{
-     float ampli = Float.parseFloat(amplitude.getText());
-     int ph = Integer.valueOf(phase.getText());
-     int freq = Integer.valueOf(phase.getText());
-     if ( ampli < 2.5 || ampli > 5 || freq < 100 ||freq > 10000 || ph > 180) {
+     float ampliudeFloat = Float.parseFloat(amplitude.getText());
+     int phaseInt = Integer.valueOf(phase.getText());
+     int frequencyInt = Integer.valueOf(frequency.getText());
+     if ( phaseInt > 180 || ampliudeFloat < 2.5 || ampliudeFloat > 5 || frequencyInt < 100 || frequencyInt > 10000) {
        error = 2;  // Out of bounds values
-    } else {
+     } else {
      if(r.getValue()==1.0){
       println("The radio button value is sine");
       port.write('s');
-    } else if(r.getValue()==2.0){
+     } else if(r.getValue()==2.0){
       println("The radio button value is square");
       port.write('q');
-    }else if(r.getValue()==3.0){
+     } else if(r.getValue()==3.0){
       println("The radio button value is square");
       port.write('t');
-    }
+     }
      println("Amplitude value is : "+amplitude.getText());
 
      String a = amplitude.getText();
@@ -154,7 +153,7 @@ void controlEvent(ControlEvent theEvent) {
         port.write(c);
      }
      println("Phase value is : "+phase.getText());
-     port.write(ph);
+     port.write(phaseInt);
   }
     } catch (Exception e){
       error = 1; //Empty parameters
