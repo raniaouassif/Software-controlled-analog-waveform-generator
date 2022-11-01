@@ -1,5 +1,16 @@
+#include <SPI.h>
+
+// int CS = 10;
+// int x ; // initialising variable x
+// float Voltage ; // initialising variable voltage
+// int I ; // this is the variable which changes in steps and hence changes resistance accordingly.
+// byte address = B00010001;
+
 void setup() {
   // put your setup code here, to run once:
+  //pinMode (CS , OUTPUT) ; // initialising 10 pin as output pin
+ // pinMode (A0, INPUT) ; // initialising pin A0 as input pin
+  //SPI.begin() ; // this begins Serial peripheral interfece
   Serial.begin(9600);
   pinMode(LED_BUILTIN,OUTPUT);
 }
@@ -45,7 +56,7 @@ void loop() {
     }
     float amplitudeValue = a.toFloat();
     //Serial.println(amplitudeValue);
-    if(amplitudeValue == 5){
+    if(amplitudeValue == 2.5){
      // Serial.println("Amplitude = 5 V");
      for(int i=0; i<=4; i++){
        digitalWrite(LED_BUILTIN,HIGH);
@@ -86,5 +97,16 @@ void loop() {
     
     
   }
+  // I = 255;
+  // digitalPotWrite(I);
+  // x = analogRead(A0);
 
 }
+
+// int digitalPotWrite(int value)
+// {
+//   digitalWrite(CS, LOW);
+//   SPI.transfer(address);
+//   SPI.transfer(value);
+//   digitalWrite(CS, HIGH);
+// }
