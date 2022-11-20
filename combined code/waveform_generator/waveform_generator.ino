@@ -11,28 +11,25 @@ AD9833 gen(FNC_PIN);       // Defaults to 25MHz internal reference frequency
 WaveformType waveType;
 float frequency;
 float phase;
+float frequencies[] = {1000, 1000};
+float amplitudes[] = {2.5, 3} ;
+float phases[] = {0, 0};
+WaveformType waveTypes[] = {SINE_WAVE, SINE_WAVE};
+int index = 0;
 
 void setup() {
   Serial.begin(9600);
   //pinMode(LED_BUILTIN,OUTPUT);
   gen.Begin();
-  // Initial signal
-  //gen.ApplySignal(SINE_WAVE, REG0, 1000, SAME_AS_REG0, 0);
-  //gen.SetPhase (REG0, 0.0);
-  //gen.SetPhase (REG1, 180.0);
-  gen.ApplySignal(SINE_WAVE, REG0, Frequency);
-  //gen.ApplySignal(SINE_WAVE, REG1, Frequency,REG1,180.0);
-  //gen.IncrementPhase(REG0, 120.0);
-  //gen.IncrementFrequency (REG0, 1000.0);
+ // gen.ApplySignal(SQUARE_WAVE, REG0, frequencies[(sizeof(frequencies) / sizeof(frequencies[0])) - 1]);
   gen.EnableOutput(true);   // Turn ON the output - it defaults to OFF
-  // There should be a 1 Hz square wave on the output of the AD9833
-  //Serial.print(gen.GetActualProgrammedPhase ( REG0 ));
-  //Serial.print(gen.GetActualProgrammedPhase ( REG1 ));
 }
 
 void loop() {
   if(Serial.available()){ // if data is sent from GUI 
     //Waveform type
+    index++;
+    Serial.print("Inside");
     char val = Serial.read(); // first char sent by GUI is waveform type
     if(val == 's'){
       waveType = SINE_WAVE;
@@ -50,6 +47,7 @@ void loop() {
       a += c;
     }
     float amplitudeValue = a.toFloat();
+
     // Frequency
     // Sends at most 1 byte (maxValue =255 )
     // So sending one char at a time
@@ -60,11 +58,14 @@ void loop() {
       f += c;
     }
     frequency = (float)f.toInt();
-   
     //Phase
     int phaseValue = Serial.read();
-    phase = (float)phaseValue;   
+    phase = (float)phaseValue;  
   }
-  gen.ApplySignal(waveType, REG0, frequency);
-  gen.IncrementPhase(REG0, phase);
+  frequencies[1] = frequency;
+  waveTypes[1] = waveType;
+
+  gen.ApplySignal(waveTypes[(sizeof(waveTypes) / sizeof(waveTypes[0])) - 1], REG0, frequencies[(sizeof(frequencies) / sizeof(frequencies[0])) - 1]);
+
+  
 }

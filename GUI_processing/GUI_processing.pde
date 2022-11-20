@@ -22,7 +22,7 @@ void setup() {
 
   size(800, 200); // window size (width, height)
   printArray(Serial.list());
-  String portName = Serial.list()[1];
+  String portName = Serial.list()[2];
   println(portName);
   port = new Serial(this,portName,9600);
   cp5 = new ControlP5(this);
