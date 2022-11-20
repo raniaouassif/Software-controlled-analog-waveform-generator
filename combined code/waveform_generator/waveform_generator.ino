@@ -5,6 +5,7 @@
 //--------------- Create an AD9833 object ----------------
 // Note, SCK and MOSI must be connected to CLK and DAT pins on the AD9833 for SPI
 #define FNC_PIN 10       // Can be any digital IO pin
+#define Frequency 1000
 AD9833 gen(FNC_PIN);       // Defaults to 25MHz internal reference frequency
 
 WaveformType waveType;
@@ -13,12 +14,20 @@ float phase;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(LED_BUILTIN,OUTPUT);
+  //pinMode(LED_BUILTIN,OUTPUT);
   gen.Begin();
   // Initial signal
-  gen.ApplySignal(SINE_WAVE, REG0, 1000, SAME_AS_REG0, 0);
+  //gen.ApplySignal(SINE_WAVE, REG0, 1000, SAME_AS_REG0, 0);
+  //gen.SetPhase (REG0, 0.0);
+  //gen.SetPhase (REG1, 180.0);
+  gen.ApplySignal(SINE_WAVE, REG0, Frequency);
+  //gen.ApplySignal(SINE_WAVE, REG1, Frequency,REG1,180.0);
+  //gen.IncrementPhase(REG0, 120.0);
+  //gen.IncrementFrequency (REG0, 1000.0);
   gen.EnableOutput(true);   // Turn ON the output - it defaults to OFF
   // There should be a 1 Hz square wave on the output of the AD9833
+  //Serial.print(gen.GetActualProgrammedPhase ( REG0 ));
+  //Serial.print(gen.GetActualProgrammedPhase ( REG1 ));
 }
 
 void loop() {
@@ -56,4 +65,6 @@ void loop() {
     int phaseValue = Serial.read();
     phase = (float)phaseValue;   
   }
+  gen.ApplySignal(waveType, REG0, frequency);
+  gen.IncrementPhase(REG0, phase);
 }
