@@ -117,8 +117,6 @@ void draw() { //similar to Arduino loop()
 
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.isFrom(generate)) {
-    
-    println("number of bytes available: "+port.available());
     error = 0;
     println("got an event from Generate Button: \n");
     try{
@@ -128,41 +126,34 @@ void controlEvent(ControlEvent theEvent) {
      if ( phaseInt > 180 || ampliudeFloat < 2.5 || ampliudeFloat > 5 || frequencyInt < 100 || frequencyInt > 10000) {
        error = 2;  // Out of bounds values
      } else {
-      println("Frequency value is : "+frequency.getText());
-      String f = frequency.getText();
-      port.write(f.length());
-      for(int i=0; i< f.length();i++){
+     if(r.getValue()==1.0){
+      println("The radio button value is sine");
+      port.write('s');
+     } else if(r.getValue()==2.0){
+      println("The radio button value is square");
+      port.write('q');
+     } else if(r.getValue()==3.0){
+      println("The radio button value is square");
+      port.write('t');
+     }
+     println("Amplitude value is : "+amplitude.getText());
+
+     String a = amplitude.getText();
+     port.write(a.length());
+     for(int i=0; i< a.length();i++){
+       char amp = a.charAt(i);
+       port.write(amp);
+     }
+     
+     println("Frequency value is : "+frequency.getText());
+     String f = frequency.getText();
+     port.write(f.length());
+     for(int i=0; i< f.length();i++){
         char c = f.charAt(i);
         port.write(c);
-      }
-     //if(r.getValue()==1.0){
-     // println("The radio button value is sine");
-     // port.write('s');
-     //} else if(r.getValue()==2.0){
-     // println("The radio button value is square");
-     // port.write('q');
-     //} else if(r.getValue()==3.0){
-     // println("The radio button value is square");
-     // port.write('t');
-     //}
-     //println("Amplitude value is : "+amplitude.getText());
-
-     //String a = amplitude.getText();
-     //port.write(a.length());
-     //for(int i=0; i< a.length();i++){
-     //  char amp = a.charAt(i);
-     //  port.write(amp);
-     //}
-     
-     ////println("Frequency value is : "+frequency.getText());
-     ////String f = frequency.getText();
-     ////port.write(f.length());
-     ////for(int i=0; i< f.length();i++){
-     ////   char c = f.charAt(i);
-     ////   port.write(c);
-     ////}
-     //println("Phase value is : "+phase.getText());
-     //port.write(phaseInt);
+     }
+     println("Phase value is : "+phase.getText());
+     port.write(phaseInt);
   }
     } catch (Exception e){
       error = 1; //Empty parameters

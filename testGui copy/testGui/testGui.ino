@@ -5,6 +5,7 @@
 // float Voltage ; // initialising variable voltage
 // int I ; // this is the variable which changes in steps and hence changes resistance accordingly.
 // byte address = B00010001;
+float frequencies[1];
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,7 +26,7 @@ void loop() {
     //Serial.println("Val="+ val);
     if(val == 's'){
      // Serial.println("Waveform type: Sine");
-     for(int i=0; i<=10; i++){
+     for(int i=0; i<=2; i++){
        digitalWrite(LED_BUILTIN,HIGH);
        delay(1000);
        digitalWrite(LED_BUILTIN,LOW);
@@ -73,7 +74,8 @@ void loop() {
       f += c;
     }
     int frequencyValue = f.toInt();
-    if(frequencyValue == 10000){
+    frequencies[0] = (float)frequencyValue;
+    if(frequencies[0] == 100.00){
     //  Serial.println("Frequency = 1000 Hz");
      for(int i=0; i<=5; i++){
        digitalWrite(LED_BUILTIN,HIGH);
