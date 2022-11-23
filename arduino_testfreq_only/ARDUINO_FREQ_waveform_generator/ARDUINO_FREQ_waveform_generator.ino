@@ -12,19 +12,12 @@ AD9833 gen(FNC_PIN);       // Defaults to 25MHz internal reference frequency
 WaveformType waveType;
 float frequency;
 float phase;
-bool myBool;
-bool equal;
-int myFrequencyLength;
 int frequencyLength;
-int frequencyLength3;
-
-int frequencyLength1;
-int frequencyLength2;
-
-int result;
 int c ;
 int c1;
 int c2;
+int c3;
+int c4;
 float FREQ = 100;
 int myFrequency = 0;
 int frequencies[1];
@@ -36,70 +29,65 @@ int index = 0;
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN,OUTPUT);
-  result = 6 * pow(10, 2) + 4 * pow(10, 1) + 9 * pow(10, 0);
-  myBool = true;
 }
 
 void loop() {
   if(Serial.available() > 0) {
-    frequencyLength = Serial.read(); // WORKS
-    int myFrequencyLength = &frequencyLength;
-    delay(1000);
-    frequencyLength1 = (*myFrequencyLength - 1); // 1
-    frequencyLength2 = (*myFrequencyLength  - 2); // 2
-    frequencyLength3 =  (*myFrequencyLength  - 3);
-
-    delay(1000); 
-    c = Serial.read();
-    delay(1000);
-    c1 = Serial.read();
-    delay(1000);
-    c2 = Serial.read();
-    delay(1000);
-    if(*myFrequencyLength == 3){
-      for(int i=0; i<1; i++){
+      frequencyLength = Serial.read(); // WORKSà
+      delay(1000);
+      if(frequencyLength == 3) {
+      c = Serial.read();
+      delay(1000);
+      c1 = Serial.read();
+      delay(1000);
+      c2 = Serial.read();
+      delay(1000);
+      myFrequency = c * pow(10, 2) + c1 *pow(10, 1) + c2; 
+      if(compare_float((float) myFrequency, (float) 649)){
+        for(int i=0; i<1; i++){
+          digitalWrite(LED_BUILTIN,HIGH);
+          delay(1000);
+          digitalWrite(LED_BUILTIN,LOW);
+          delay(1000);
+        }
+      }
+    } else if (frequencyLength == 4) {
+      c = Serial.read();
+      delay(1000);
+      c1 = Serial.read();
+      delay(1000);
+      c2 = Serial.read();
+      delay(1000);
+      c3 = Serial.read();
+      delay(1000);
+      myFrequency = c * pow(10, 3) + c1 *pow(10, 2) + c2 * pow(10, 1) + c3; 
+      if(compare_float((float) myFrequency, (float) 4932)){
+        for(int i=0; i<2; i++){
+          digitalWrite(LED_BUILTIN,HIGH);
+          delay(1000);
+          digitalWrite(LED_BUILTIN,LOW);
+          delay(1000);
+        }
+      }
+    
+    } else if (frequencyLength ==5) {
+      c = Serial.read();
+      c1 = Serial.read();
+      c2 = Serial.read();
+      c3 = Serial.read();
+      c4 = Serial.read();
+      myFrequency = c * pow(10, 4) + c1 *pow(10, 3) + c2 * pow(10, 2) + c3 * pow(10, 1) + c4; 
+      if(compare_float((float) myFrequency, (float) 10000)){
+      for(int i=0; i<2; i++){
         digitalWrite(LED_BUILTIN,HIGH);
         delay(1000);
         digitalWrite(LED_BUILTIN,LOW);
         delay(1000);
       }
     }
-    if(c == 6){
-      for(int i=0; i<1; i++){
-        digitalWrite(LED_BUILTIN,HIGH);
-        delay(1000);
-        digitalWrite(LED_BUILTIN,LOW);
-        delay(1000);
-      }
-    }
-    if(c1 == 4){
-      for(int i=0; i<1; i++){
-        digitalWrite(LED_BUILTIN,HIGH);
-        delay(1000);
-        digitalWrite(LED_BUILTIN,LOW);
-        delay(1000);
-      }
-    }
-    if(c2 == 9){
-      for(int i=0; i<1; i++){
-        digitalWrite(LED_BUILTIN,HIGH);
-        delay(1000);
-        digitalWrite(LED_BUILTIN,LOW);
-        delay(1000);
-      }
-    }
-    myFrequency = c * pow(10, frequencyLength1) + c1 *pow(10, frequencyLength2) + c2 * pow(10, frequencyLength3); 
-    if(myFrequency == 649){
-      for(int i=0; i<1; i++){
-        digitalWrite(LED_BUILTIN,HIGH);
-        delay(1000);
-        digitalWrite(LED_BUILTIN,LOW);
-        delay(1000);
-      }
     }
   }
 }
-
 //compares if the float f1 is equal with f2 and returns 1 if true and 0 if false
  int compare_float(float f1, float f2)
  {
@@ -114,22 +102,3 @@ void loop() {
     return 0;
    }
  }
-
-// int getFrequency() {
-//     frequencyLength = Serial.read(); // WORKS
-//     for(int i=1; i<=3; i++){
-//       c = Serial.read();
-//       if(c == 6 || c == 4 || c == 9){
-//         digitalWrite(LED_BUILTIN,LOW);
-//         delay(1000);
-//         digitalWrite(LED_BUILTIN,HIGH);
-//         delay(1000);
-//         digitalWrite(LED_BUILTIN,LOW);
-//         delay(1000);
-//         digitalWrite(LED_BUILTIN,HIGH);
-//         delay(1000);
-//       }
-//     }
-//     return myFrequency;
-//  }
- 
