@@ -118,22 +118,40 @@ void draw() { //similar to Arduino loop()
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.isFrom(generate)) {
     println("number of bytes available: "+port.available());
-    error = 0;
+    //error = 0;
     println("got an event from Generate Button: \n");
     try{
-     {
-      println("Frequency value is : "+frequency.getText());
-      String f = frequency.getText();
-      println("String Frequency value is : "+f);
-      port.write(f.length());
-      println(f.length());
-      for(int i=0; i< f.length();i++){
-        int c = Character.getNumericValue(f.charAt(i));
-        println(c);
-        port.write(c);
+      //float ampliudeFloat = Float.parseFloat(amplitude.getText());
+      //int phaseInt = Integer.valueOf(phase.getText());
+      //int frequencyInt = Integer.valueOf(frequency.getText());
+      //if ( phaseInt > 180 || ampliudeFloat < 1.5 || ampliudeFloat > 5 || frequencyInt < 100 || frequencyInt > 10000) {
+      //  error = 2;  // Out of bounds values
+      //} else 
+      {
+        println("Frequency value is : "+frequency.getText());
+        String f = frequency.getText();
+        println("String Frequency value is : "+f);
+        port.write(f.length());
+        println(f.length());
+        for(int i=0; i< f.length();i++){
+          int c = Character.getNumericValue(f.charAt(i));
+          println(c);
+          port.write(c);
+        }
+        println("Amplitude value is : "+amplitude.getText());
+        String a = amplitude.getText();
+        println("Amplitude length is : "+a.length());
+        println("numeric char at 0 is length is : "+Character.getNumericValue(a.charAt(0)));
+        port.write(a.length());
+        if(a.length() == 1) {
+          port.write(Character.getNumericValue(a.charAt(0)));
+        }else if (a.length() == 3) {
+          port.write(Character.getNumericValue(a.charAt(0)));
+          println("numeric char at 2 is length is : "+Character.getNumericValue(a.charAt(2)));
 
-      }
-  }
+          port.write(Character.getNumericValue(a.charAt(2)));
+        }
+       }
     } catch (Exception e){
       error = 1; //Empty parameters
     }
