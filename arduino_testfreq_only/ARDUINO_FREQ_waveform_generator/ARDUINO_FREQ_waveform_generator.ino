@@ -14,7 +14,13 @@ float frequency;
 float phase;
 bool myBool;
 bool equal;
+int myFrequencyLength;
 int frequencyLength;
+int frequencyLength3;
+
+int frequencyLength1;
+int frequencyLength2;
+
 int result;
 int c ;
 int c1;
@@ -37,6 +43,12 @@ void setup() {
 void loop() {
   if(Serial.available() > 0) {
     frequencyLength = Serial.read(); // WORKS
+    int myFrequencyLength = &frequencyLength;
+    delay(1000);
+    frequencyLength1 = (*myFrequencyLength - 1); // 1
+    frequencyLength2 = (*myFrequencyLength  - 2); // 2
+    frequencyLength3 =  (*myFrequencyLength  - 3);
+
     delay(1000); 
     c = Serial.read();
     delay(1000);
@@ -44,7 +56,14 @@ void loop() {
     delay(1000);
     c2 = Serial.read();
     delay(1000);
-   
+    if(*myFrequencyLength == 3){
+      for(int i=0; i<1; i++){
+        digitalWrite(LED_BUILTIN,HIGH);
+        delay(1000);
+        digitalWrite(LED_BUILTIN,LOW);
+        delay(1000);
+      }
+    }
     if(c == 6){
       for(int i=0; i<1; i++){
         digitalWrite(LED_BUILTIN,HIGH);
@@ -69,16 +88,7 @@ void loop() {
         delay(1000);
       }
     }
-    myFrequency = c * pow(10, (frequencyLength -1)); 
-    if(frequencyLength == 2){
-      for(int i=0; i<2; i++){
-        digitalWrite(LED_BUILTIN,HIGH);
-        delay(1000);
-        digitalWrite(LED_BUILTIN,LOW);
-        delay(1000);
-      }
-    }
-
+    myFrequency = c * pow(10, frequencyLength1) + c1 *pow(10, frequencyLength2) + c2 * pow(10, frequencyLength3); 
     if(myFrequency == 649){
       for(int i=0; i<1; i++){
         digitalWrite(LED_BUILTIN,HIGH);
