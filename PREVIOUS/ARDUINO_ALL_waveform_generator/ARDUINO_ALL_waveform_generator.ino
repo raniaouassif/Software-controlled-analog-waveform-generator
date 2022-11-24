@@ -90,8 +90,6 @@ void loop() {
     }
   }
 } 
-
-
 //compares if the float f1 is equal with f2 and returns 1 if true and 0 if false
 int compare_float(float f1, float f2){
   float precision = 0.000001;

@@ -27,7 +27,6 @@ int myPhase;
 int myWaveIdx;
 WaveformType myWaveformType;
 WaveformType waveTest;
-WaveformType waveTypes[2] = {SINE_WAVE, SINE_WAVE};
 int index = 0;
 
 void setup() {
@@ -118,3 +117,4 @@ int compare_float(float f1, float f2){
     return 0;
   }
 }
+
