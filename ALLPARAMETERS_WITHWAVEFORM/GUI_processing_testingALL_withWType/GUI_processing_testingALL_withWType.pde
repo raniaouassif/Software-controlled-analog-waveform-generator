@@ -165,7 +165,7 @@ void controlEvent(ControlEvent theEvent) {
           println("The radio button value is square");
           port.write(2);
        } else if(r.getValue()==3.0){
-          println("The radio button value is square");
+          println("The radio button value is triangle");
           port.write(3);
        }
       }
