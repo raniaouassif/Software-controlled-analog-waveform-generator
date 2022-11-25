@@ -6,13 +6,11 @@
 
 //--------------- Create an AD9833 object ----------------
 // Note, SCK and MOSI must be connected to CLK and DAT pins on the AD9833 for SPI
-#define FNC_PIN 10       // Can be any digital IO pin
+#define FNC_PIN 10      // Can be any digital IO pin
 #define Frequency 100
 AD9833 gen(FNC_PIN);       // Defaults to 25MHz internal reference frequency
 
 WaveformType waveType;
-float frequency;
-float phase;
 int frequencyLength;
 int amplitudeLength;
 int c ;
@@ -26,21 +24,27 @@ float myAmplitude;
 int myPhase;
 int myWaveIdx;
 WaveformType myWaveformType;
-WaveformType waveTest;
-int index = 0;
+//DIGIPOT MCP4131
+int address = 0x00;
+int CS1= 9;
+float VIN = 0.67;
+int ad9833_value;
+float ad9833_voltage;
+int Dn;
 
 void setup() {
   Serial.begin(9600);
+  pinMode (CS1, OUTPUT);
   gen.Begin();
   pinMode(LED_BUILTIN,OUTPUT);
-  waveTest = TRIANGLE_WAVE;
-  gen.ApplySignal(SINE_WAVE, REG0, 100);
+  gen.ApplySignal(SINE_WAVE, REG0, FREQ);
   gen.EnableOutput(true);   // Turn ON the output - it defaults to OFF
   // There should be a 1 Hz square wave on the output of the AD9833
 }
 
 void loop() {
   delay(10);
+
   if(Serial.available() > 0) {
     //FREQUENCY
     frequencyLength = Serial.read(); // WORKSà
@@ -96,18 +100,22 @@ void loop() {
     } else if(myWaveIdx == 3) {
       myWaveformType = TRIANGLE_WAVE;
     }
-    if(myWaveformType == waveTest) {
-      for(int i=0; i<7; i++){
-          digitalWrite(LED_BUILTIN,HIGH);
-          delay(1000);
-          digitalWrite(LED_BUILTIN,LOW);
-          delay(1000);
-      }
-    }
   gen.ApplySignal(myWaveformType, REG0, (float) myFrequency);
   gen.SetPhase(REG0, (float) myPhase);
+  Dn = 128 - (128 * (VIN / (myAmplitude + 0.4)));
   }
+  digitalPotWrite(Dn);
 } 
+
+int digitalPotWrite(int value) {
+  digitalWrite(CS1, LOW);
+  delay(100);
+  SPI.transfer(address);
+  SPI.transfer(value);
+  delay(100);
+  digitalWrite(CS1, HIGH);
+}
+
 //compares if the float f1 is equal with f2 and returns 1 if true and 0 if false
 int compare_float(float f1, float f2){
   float precision = 0.000001;
