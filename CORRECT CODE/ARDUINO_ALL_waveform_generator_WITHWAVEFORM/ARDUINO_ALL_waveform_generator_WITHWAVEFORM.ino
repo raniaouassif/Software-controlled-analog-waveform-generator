@@ -5,10 +5,9 @@
 #include <math.h>
 
 //--------------- Create an AD9833 object ----------------
-// Note, SCK and MOSI must be connected to CLK and DAT pins on the AD9833 for SPI
-#define FNC_PIN 10      // Can be any digital IO pin
+#define FNC_PIN 10      // CS for AD9833
 #define Frequency 100
-AD9833 gen(FNC_PIN);       // Defaults to 25MHz internal reference frequency
+AD9833 gen(FNC_PIN);   // Defaults to 25MHz internal reference frequency
 
 WaveformType waveType;
 int frequencyLength;
@@ -18,18 +17,17 @@ int c1;
 int c2;
 int c3;
 int c4;
-float FREQ = 100;
 int myFrequency = 0;
 float myAmplitude;
 int myPhase;
 int myWaveIdx;
+
+float FREQ = 100;
 WaveformType myWaveformType;
 //DIGIPOT MCP4131
 int address = 0x00;
 int CS1= 9;
-float VIN = 0.67;
-int ad9833_value;
-float ad9833_voltage;
+float VIN = 0.67; // TO TRY: 0.68
 int Dn;
 
 void setup() {
@@ -37,14 +35,12 @@ void setup() {
   pinMode (CS1, OUTPUT);
   gen.Begin();
   pinMode(LED_BUILTIN,OUTPUT);
-  gen.ApplySignal(SINE_WAVE, REG0, FREQ);
+  gen.ApplySignal(SINE_WAVE, REG0, FREQ); // Default Waveform : Sine of frequency 100
   gen.EnableOutput(true);   // Turn ON the output - it defaults to OFF
-  // There should be a 1 Hz square wave on the output of the AD9833
 }
 
 void loop() {
   delay(10);
-
   if(Serial.available() > 0) {
     //FREQUENCY
     frequencyLength = Serial.read(); // WORKSà
@@ -107,6 +103,7 @@ void loop() {
   digitalPotWrite(Dn);
 } 
 
+//SPI DIGIPOT
 int digitalPotWrite(int value) {
   digitalWrite(CS1, LOW);
   delay(100);
