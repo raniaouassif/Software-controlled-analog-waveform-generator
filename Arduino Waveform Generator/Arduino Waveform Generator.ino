@@ -1,17 +1,18 @@
+// Using AD9833 IC, MCP4131 digipot and UA741CP op amp
+// this program allows to control waveform parameters using implemented Processing GUI
+
 #include <AD9833.h>
 #include <digitalWriteFast.h>
 #include <SPI.h>
 #include <math.h>
 
-//--------------- Create an AD9833 object ----------------
+// Create an AD9833 object
 #define FNC_PIN 10      // CS for AD9833
-#define Frequency 100
 AD9833 gen(FNC_PIN);   // Defaults to 25MHz internal reference frequency
 
-WaveformType waveType;
 int frequencyLength;
 int amplitudeLength;
-int c ;
+int c;
 int c1;
 int c2;
 int c3;
@@ -23,6 +24,7 @@ int myWaveIdx;
 
 float FREQ = 100;
 WaveformType myWaveformType;
+
 //DIGIPOT MCP4131
 int address = 0x00;
 int CS1= 9;
@@ -30,11 +32,11 @@ float VIN = 0.67; // TO TRY: 0.68
 int Dn;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(9600); //baud rate = 9600
   pinMode (CS1, OUTPUT);
   gen.Begin();
-  pinMode(LED_BUILTIN,OUTPUT);
-  gen.ApplySignal(SINE_WAVE, REG0, FREQ); // Default Waveform : Sine of frequency 100
+  pinMode(LED_BUILTIN,OUTPUT); // for debugging 
+  gen.ApplySignal(SINE_WAVE, REG0, FREQ); // default waveform : Sine, frequency = 100 Hz
   gen.EnableOutput(true);   // Turn ON the output - it defaults to OFF
 }
 
@@ -42,16 +44,16 @@ void loop() {
   delay(10);
   if(Serial.available() > 0) {
     //FREQUENCY
-    frequencyLength = Serial.read(); // WORKSà
+    frequencyLength = Serial.read(); // read length of frequency entered in GUI
     delay(1000);
-    if(frequencyLength == 3) {
+    if(frequencyLength == 3) { 
       c = Serial.read();
       delay(1000);
       c1 = Serial.read();
       delay(1000);
       c2 = Serial.read();
       delay(1000);
-      myFrequency = c * pow(10, 2) + c1 *pow(10, 1) + c2; 
+      myFrequency = c * pow(10, 2) + c1 *pow(10, 1) + c2;  // then convert to float 
     } else if (frequencyLength == 4) {
       c = Serial.read();
       delay(1000);
@@ -95,11 +97,11 @@ void loop() {
     } else if(myWaveIdx == 3) {
       myWaveformType = TRIANGLE_WAVE;
     }
-  gen.ApplySignal(myWaveformType, REG0, (float) myFrequency);
-  gen.SetPhase(REG0, (float) myPhase);
-  Dn = 128 - (128 * (VIN / (myAmplitude + 0.4)));
+  gen.ApplySignal(myWaveformType, REG0, (float) myFrequency); //apply new signal with GUI parameters
+  gen.SetPhase(REG0, (float) myPhase); // apply new phase
+  Dn = 128 - (128 * (VIN / (myAmplitude + 0.4))); //amplitude on oscilloscope is always off by 0.4, adjusting it here
   }
-  digitalPotWrite(Dn);
+  digitalPotWrite(Dn); // write the wiper position to digipot
 } 
 
 //SPI DIGIPOT
@@ -111,14 +113,3 @@ int digitalPotWrite(int value) {
   delay(100);
   digitalWrite(CS1, HIGH);
 }
-
-//compares if the float f1 is equal with f2 and returns 1 if true and 0 if false
-int compare_float(float f1, float f2){
-  float precision = 0.000001;
-  if (((f1 - precision) < f2) && ((f1 + precision) > f2)){
-    return 1;
-  } else {
-    return 0;
-  }
-}
-

@@ -22,6 +22,8 @@ void setup() {
 
   size(800, 200); // window size (width, height)
   printArray(Serial.list());
+  
+  // Adjust index depending on port connected to Arduino
   String portName = Serial.list()[2];
   println(portName);
   port = new Serial(this,portName,9600);
