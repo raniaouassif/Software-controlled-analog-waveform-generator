@@ -50,7 +50,6 @@ Software:
   
   Get the array index of the port which looks something like :   /dev/cu.usbmodemxxxxx   (in the example above it's number 2):  
 
-
 5.3 Stop the execution on the Processing IDE (button next to run)
 
 5.4 Replace the following line of code by your port number (in the example it is 2)
@@ -59,6 +58,9 @@ Software:
 5.5 Save the processing file (to not have to fix this anymore) 
 
 5.6 Run the processing file
+
+5.7 (Optional) To extract the application as an executable, go to File > Export application, then select your platform and settings, and export.
+    The executable will be saved in the GUI folder
 
 6. Build the prototype circuit 
 ![315306921_535303201572557_4521541644535460577_n](https://user-images.githubusercontent.com/59747858/205777551-af24368b-e26e-4e26-9d98-7bd95d42be67.png)
